@@ -9,12 +9,12 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-// Register
+// REGISTER
 router.post('/register', async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
-    // Check if user already exists
+    // Check for existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists with this email' });
@@ -27,21 +27,28 @@ router.post('/register', async (req, res) => {
       password,
       role,
       verificationToken,
-      isVerified: true // For development, set to true. In production, implement email verification
+      isVerified: true // Set true for dev; use email verification in production
     });
 
     await user.save();
 
-    // Generate JWT token
+    // Generate JWT
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'shambaconnect_secret',
       { expiresIn: '7d' }
     );
 
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,      // required for cross-site cookies
+      sameSite: 'None',  // allow from different origins like Netlify
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
     res.status(201).json({
-      message: 'User registered successfully',
-      token,
+      message: 'Registration successful',
       user: {
         id: user._id,
         email: user.email,
@@ -55,37 +62,35 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login
+// LOGIN
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if user exists
+    // Find user
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
+    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
-    // Verify password
+    // Check password
     const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    // Generate JWT token
+    // Generate JWT
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || 'shambaconnect_secret',
       { expiresIn: '7d' }
     );
 
+    // Set cookie
     res.cookie('token', token, {
-    httpOnly: true,
-    secure: true,         // Use HTTPS
-    sameSite: 'None'      // Cross-origin support (Netlify + Render)
-  });
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
-    // Get profile data
+    // Load profile if exists
     let profile = null;
     if (user.role === 'farmer') {
       profile = await Farmer.findOne({ userId: user._id });
@@ -95,7 +100,6 @@ router.post('/login', async (req, res) => {
 
     res.json({
       message: 'Login successful',
-      token,
       user: {
         id: user._id,
         email: user.email,
@@ -110,11 +114,11 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Get current user
+// GET CURRENT USER
 router.get('/me', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');
-    
+
     let profile = null;
     if (user.role === 'farmer') {
       profile = await Farmer.findOne({ userId: user._id });
@@ -133,9 +137,19 @@ router.get('/me', auth, async (req, res) => {
       profile
     });
   } catch (error) {
-    console.error('Get user error:', error);
+    console.error('Fetch user error:', error);
     res.status(500).json({ message: 'Server error' });
   }
+});
+
+// LOGOUT (optional)
+router.post('/logout', (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None'
+  });
+  res.json({ message: 'Logged out successfully' });
 });
 
 module.exports = router;

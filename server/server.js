@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const cors = require('cors'); // ✅ Only declared once
 const dotenv = require('dotenv');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -24,16 +24,13 @@ const io = socketIo(server, {
   }
 });
 
-const cors = require('cors');
-
+// ✅ CORS middleware (only once and with your correct domain)
 app.use(cors({
-  origin: 'https://your-site.netlify.app', // Replace with your Netlify domain
+  origin: 'https://myshambaconect.netlify.app/login',
   credentials: true
 }));
 
-
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
@@ -47,11 +44,6 @@ const connectDB = async () => {
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error('MongoDB connection error:', error.message);
-    console.log('Please ensure you have:');
-    console.log('1. Created a MongoDB Atlas account at https://cloud.mongodb.com/');
-    console.log('2. Created a cluster and database user');
-    console.log('3. Added your IP to the network access list');
-    console.log('4. Updated the MONGODB_URI in your .env file');
     process.exit(1);
   }
 };
