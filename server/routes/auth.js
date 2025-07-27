@@ -79,6 +79,12 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    res.cookie('token', token, {
+    httpOnly: true,
+    secure: true,         // Use HTTPS
+    sameSite: 'None'      // Cross-origin support (Netlify + Render)
+  });
+
     // Get profile data
     let profile = null;
     if (user.role === 'farmer') {

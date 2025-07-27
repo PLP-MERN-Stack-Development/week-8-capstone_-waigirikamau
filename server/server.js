@@ -24,6 +24,14 @@ const io = socketIo(server, {
   }
 });
 
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'https://your-site.netlify.app', // Replace with your Netlify domain
+  credentials: true
+}));
+
+
 // Middleware
 app.use(cors());
 app.use(express.json());
