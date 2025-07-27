@@ -1,52 +1,132 @@
-# MERN Stack Capstone Project
+# 🌿 ShambaConnect - MERN Agritech Platform
 
-This assignment focuses on designing, developing, and deploying a comprehensive full-stack MERN application that showcases all the skills you've learned throughout the course.
+🔗 **Live Demo**: [https://your-frontend-link.netlify.app](https://your-frontend-link.netlify.app)
 
-## Assignment Overview
+ShambaConnect is a full-stack MERN (MongoDB, Express, React, Node.js) web application designed to connect farmers and buyers in a digital marketplace. It features user authentication, product listings, profile creation, real-time chat, and role-based access for Farmers and Buyers.
 
-You will:
-1. Plan and design a full-stack MERN application
-2. Develop a robust backend with MongoDB, Express.js, and Node.js
-3. Create an interactive frontend with React.js
-4. Implement testing across the entire application
-5. Deploy the application to production
+---
 
-## Getting Started
+## ✨ Features
 
-1. Accept the GitHub Classroom assignment
-2. Clone the repository to your local machine
-3. Follow the instructions in the `Week8-Assignment.md` file
-4. Plan, develop, and deploy your capstone project
+- 👥 Role-based Registration/Login for Farmers and Buyers
+- 📦 Product Listings with Image Upload
+- 🧑‍🌾 Farmer and Buyer Profile Creation
+- 💬 Real-time Chat between Farmers and Buyers using Socket.IO
+- 🔐 Protected Routes and JWT Authentication
+- 🔎 Product Filtering & Searching (Planned)
+- 📈 Dashboard for Buyers with Chat Interface
+- 📁 Clean and Modular Code Structure
 
-## Files Included
+---
 
-- `Week8-Assignment.md`: Detailed assignment instructions
+## 🛠️ Tech Stack
 
-## Requirements
+### Frontend
+- React + TypeScript (Vite)
+- Tailwind CSS
+- Axios
+- React Router
+- Socket.IO Client
 
-- Node.js (v18 or higher)
-- MongoDB (local installation or Atlas account)
+### Backend
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- Multer (Image Uploads)
+- JWT (Authentication)
+- Socket.IO (WebSockets)
+
+---
+
+## 📁 Project Structure
+ShambaConnect/
+├── client/ # React Frontend
+│ ├── src/
+│ │ ├── components/
+│ │ │ ├── Auth/
+│ │ │ ├── Chat/
+│ │ │ ├── Dashboard/
+│ │ │ ├── Home/
+│ │ │ ├── Layout/
+│ │ │ ├── Products/
+│ │ │ └── Profile/
+│ │ ├── contexts/
+│ │ │ └── AuthContext.tsx
+│ │ ├── services/
+│ │ │ └── api.ts
+│ │ ├── App.tsx
+│ │ ├── main.tsx
+│ │ ├── index.css
+│ │ └── index.html
+│ └── ...
+│
+├── server/ # Express Backend
+│ ├── controllers/
+│ ├── middleware/
+│ ├── models/
+│ ├── routes/
+│ │ ├── auth.js
+│ │ ├── buyers.js
+│ │ ├── farmers.js
+│ │ ├── products.js
+│ │ └── chat.js
+│ ├── .env
+│ ├── server.js
+│ └── package.json
+│
+├── README.md
+└── .gitignore
+
+
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js
+- MongoDB
 - npm or yarn
-- Git and GitHub account
-- Accounts on deployment platforms (Render/Vercel/Netlify/etc.)
 
-## Project Ideas
+### 🖥️ Backend Setup
 
-The `Week8-Assignment.md` file includes several project ideas, but you're encouraged to develop your own idea that demonstrates your skills and interests.
+```bash
+cd server
+npm install
+npm run dev
 
-## Submission
 
-Your project will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+🌐 Frontend Setup
+cd client
+npm install
+npm run dev
 
-1. Commit and push your code regularly
-2. Include comprehensive documentation
-3. Deploy your application and add the live URL to your README.md
-4. Create a video demonstration and include the link in your README.md
 
-## Resources
+To build frontend for production:
+npm run build
 
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [Express.js Documentation](https://expressjs.com/)
-- [React Documentation](https://react.dev/)
-- [Node.js Documentation](https://nodejs.org/en/docs/)
-- [GitHub Classroom Guide](https://docs.github.com/en/education/manage-coursework-with-github-classroom) 
+
+🧪 API Testing
+You can test API routes using:
+
+Postman
+
+Thunder Client (VS Code extension)
+
+Ensure your backend is running on http://localhost:5000 and frontend on http://localhost:5173.
+
+💬 Real-Time Chat
+ShambaConnect uses Socket.IO for chat between farmers and buyers:
+
+The backend emits/receives messages via /chat route
+
+The frontend includes chat logic in BuyerDashboard.tsx and ChatWindow components
+
+Make sure both client and server are running for full chat functionality.
+
+🔐 Authentication
+JWT tokens are issued on login
+
+Protected routes use middleware (auth.js)
+
+User roles are enforced for access control
