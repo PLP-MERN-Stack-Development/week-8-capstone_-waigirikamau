@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, MessageCircle, ShoppingCart, TrendingUp, Heart, Eye } from 'lucide-react';
+import { Search, MessageCircle, ShoppingCart } from 'lucide-react';
 import axios from 'axios';
 
 interface Product {
@@ -11,6 +11,7 @@ interface Product {
   pricePerUnit: number;
   images: string[];
   farmerId: {
+    _id: string;
     farmName: string;
     firstName: string;
     lastName: string;
@@ -21,7 +22,6 @@ interface Product {
 }
 
 const BuyerDashboard: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,7 +33,6 @@ const BuyerDashboard: React.FC = () => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get('/products?limit=12');
-      setProducts(response.data.products);
       setFeaturedProducts(response.data.products.slice(0, 6));
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -48,7 +47,7 @@ const BuyerDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading marketplace...</p>
@@ -60,7 +59,8 @@ const BuyerDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
+
+        {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Buyer Dashboard</h1>
           <p className="text-gray-600">Discover fresh produce from local farmers</p>
@@ -69,21 +69,19 @@ const BuyerDashboard: React.FC = () => {
         {/* Search Section */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search for products, farmers, or locations..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-              </div>
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search for products, farmers, or locations..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
             </div>
             <Link
               to={`/products?search=${searchTerm}`}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center space-x-2"
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center justify-center space-x-2"
             >
               <Search className="w-5 h-5" />
               <span>Search</span>
@@ -99,7 +97,7 @@ const BuyerDashboard: React.FC = () => {
               <Link
                 key={category}
                 to={`/products?category=${category}`}
-                className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:shadow-lg hover:border-green-300 transition-all"
+                className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-green-400 transition"
               >
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
                   <ShoppingCart className="w-6 h-6 text-green-600" />
@@ -113,24 +111,24 @@ const BuyerDashboard: React.FC = () => {
         {/* Quick Actions */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <Link
               to="/products"
-              className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors"
+              className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition"
             >
               <ShoppingCart className="w-5 h-5" />
               <span>Browse All Products</span>
             </Link>
             <Link
               to="/chat"
-              className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
+              className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition"
             >
               <MessageCircle className="w-5 h-5" />
               <span>View Messages</span>
             </Link>
             <Link
               to="/profile/edit"
-              className="flex items-center justify-center space-x-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors"
+              className="flex items-center justify-center space-x-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition"
             >
               <span>Update Profile</span>
             </Link>
@@ -152,13 +150,13 @@ const BuyerDashboard: React.FC = () => {
           {featuredProducts.length === 0 ? (
             <div className="text-center py-8">
               <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 mb-4">No products available at the moment</p>
+              <p className="text-gray-500 mb-2">No products available at the moment</p>
               <p className="text-gray-400">Check back later for fresh listings</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredProducts.map((product) => (
-                <div key={product._id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                <div key={product._id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
                   {product.images.length > 0 && (
                     <img
                       src={`http://localhost:5000/uploads/${product.images[0]}`}
@@ -167,8 +165,8 @@ const BuyerDashboard: React.FC = () => {
                     />
                   )}
                   <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-2">{product.name}</h3>
-                    <p className="text-sm text-gray-600 mb-2 capitalize">{product.category}</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
+                    <p className="text-sm text-gray-600 mb-1 capitalize">{product.category}</p>
                     <p className="text-lg font-bold text-green-600 mb-2">
                       KES {product.pricePerUnit}/{product.quantity.unit}
                     </p>
@@ -179,15 +177,15 @@ const BuyerDashboard: React.FC = () => {
                     <div className="flex space-x-2">
                       <Link
                         to={`/products/${product._id}`}
-                        className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-center transition-colors"
+                        className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-center transition"
                       >
                         View Details
                       </Link>
                       <Link
                         to={`/chat?farmer=${product.farmerId._id}&product=${product._id}`}
-                        className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center"
+                        className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center transition"
                       >
-                        <MessageCircle className="w-5 h-5 text-gray-400" />
+                        <MessageCircle className="w-5 h-5 text-gray-500" />
                       </Link>
                     </div>
                   </div>
@@ -196,6 +194,7 @@ const BuyerDashboard: React.FC = () => {
             </div>
           )}
         </div>
+
       </div>
     </div>
   );

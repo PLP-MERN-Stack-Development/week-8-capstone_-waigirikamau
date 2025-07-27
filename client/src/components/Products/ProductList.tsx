@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Search, Filter, MapPin, Calendar, Heart, Eye, Phone, MessageCircle } from 'lucide-react';
+import { Search, Filter, MapPin, Calendar, Heart, Eye, MessageCircle } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, X, Calendar, MapPin, DollarSign } from 'lucide-react';
+import { Camera, Upload, X, Calendar, DollarSign } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -148,10 +148,9 @@ const CreateProduct: React.FC = () => {
       });
 
       const response = await axios.post('/products', submitData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+  headers: { 'Content-Type': 'multipart/form-data' },
+});
+console.log(response.data); // <-- add this or use it meaningfully
 
       navigate('/products/manage');
     } catch (err: any) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { 
   ArrowLeft, MapPin, Calendar, Eye, Heart, Phone, MessageCircle, 
-  Star, Truck, Shield, CheckCircle, AlertCircle 
+  Star, Truck, AlertCircle 
 } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
@@ -62,7 +62,7 @@ const ProductDetail: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [showContactInfo, setShowContactInfo] = useState(false);
+  const [showContactInfo] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -103,7 +103,8 @@ const ProductDetail: React.FC = () => {
       return;
     }
     // Navigate to chat with farmer
-    navigate(`/chat?farmer=${product.farmerId._id}&product=${product._id}`);
+    if (!product) return;
+navigate(`/chat?farmer=${product.farmerId._id}&product=${product._id}`);
   };
 
   if (loading) {
