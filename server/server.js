@@ -26,7 +26,7 @@ const io = socketIo(server, {
 
 // ✅ CORS middleware (only once and with your correct domain)
 app.use(cors({
-  origin: 'https://myshambaconect.netlify.app/login',
+  origin: 'https://myshambaconect.netlify.app',
   credentials: true
 }));
 
