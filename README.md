@@ -1,6 +1,6 @@
 # 🌿 ShambaConnect - MERN Agritech Platform
 
-🔗 **Live Demo**: [https://your-frontend-link.netlify.app](https://your-frontend-link.netlify.app)
+🔗 **Live Demo**: [https://elaborate-biscotti-95f37f.netlify.app/]
 
 ShambaConnect is a full-stack MERN (MongoDB, Express, React, Node.js) web application designed to connect farmers and buyers in a digital marketplace. It features user authentication, product listings, profile creation, real-time chat, and role-based access for Farmers and Buyers.
 
