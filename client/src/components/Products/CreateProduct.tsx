@@ -142,10 +142,10 @@ const CreateProduct: React.FC = () => {
         submitData.append(key, value);
       });
 
-      // Add images
-      images.forEach(image => {
-        submitData.append('images', image);
-      });
+     // ✅ Add images (important fix: 'images[]' instead of 'images')
+    images.forEach(image => {
+  submitData.append('images[]', image);
+});
 
       const response = await axios.post('/products', submitData, {
   headers: { 'Content-Type': 'multipart/form-data' },

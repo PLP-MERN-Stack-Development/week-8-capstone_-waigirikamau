@@ -7,7 +7,7 @@ import io, { Socket } from 'socket.io-client';
 
 // Configure API and Socket URLs based on environment
 const API_BASE_URL = import.meta.env.PROD 
-  ? 'https://your-backend-url.herokuapp.com' // Replace with your deployed backend URL
+  ? 'https://week-8-capstone-waigirikamau-2.onrender.com' // Replace with your deployed backend URL
   : 'http://localhost:5000';
 
 interface Chat {
